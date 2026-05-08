@@ -36,3 +36,4 @@
 | | Vercel 주소가 https://goodtogo-nine.vercel.app/ 로 바뀌었다고 알림, 설정에 기록 요청 | 메모리(project_setup.md) 및 WORKLOG.md Vercel URL 업데이트 |
 | | Vercel 404 원인 분석 요청 | 로컬 빌드 정상 확인, Vercel 프로젝트 도메인-배포 미연결 문제로 진단 |
 | | Supabase 설정 요청 (프로젝트: vitsxrssnwhcjcgkdmso) | .env.local 생성, @supabase/supabase-js 설치, src/lib/supabase.ts 클라이언트 생성, 메모리 업데이트 |
+| | Supabase·Vercel·Git 연계 확인용 한 줄 게시판 제작 요청 | Supabase posts 테이블 생성(SQL), src/app/board/page.tsx 생성, 빌드 확인, Git push (aca382e) |
