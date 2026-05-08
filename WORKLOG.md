@@ -19,6 +19,16 @@
 | 11:57 | (배포 URL 공유) | 배포 URL 확인: https://goodtogo-xtlo.vercel.app/ (이후 변경) |
 | 12:10 | 베셀 주소는 https://goodtogo-zeta.vercel.app/ 로할께 | Vercel 배포 URL 변경 확인 및 기록 |
 
+| 12:15 | npx plugins add vercel/vercel-plugin | Vercel 플러그인 설치 완료 (`--target claude-code`) |
+
 ---
 
 <!-- 이후 작업은 아래에 계속 추가 -->
+
+## 2026-05-08 (2차 세션)
+
+| 시간 | 지시 | 수행 내용 |
+|------|------|-----------|
+| 세션 시작 | 세션 시작 | 이전 컨텍스트 복원, WORKLOG.md 및 메모리 로드 |
+| | 기존 내 명령들 기억해? | 메모리(`project_setup.md`) 확인 후 이전 세션 내용 요약 제공 |
+| | 내가 지시하는 내용과 네가 실행하는 모든 내용을 시간과 같이 기록해. 다시 시작할 때 이 명령이 실행되도록 해줘 | CLAUDE.md에 작업 로그 자동 기록 규칙 추가, WORKLOG.md에 2차 세션 섹션 추가 |

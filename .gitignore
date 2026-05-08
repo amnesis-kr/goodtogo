@@ -39,3 +39,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE
+.idea/
+.vscode/
+
+# logs
+*.log
+
+# bkit / omc / claude state (tool internals)
+.bkit/
+.omc/
+.claude/
+
+# cache
+.cache/
