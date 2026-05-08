@@ -37,9 +37,13 @@ function makeHuman(color: number): THREE.Group {
   const skinMat = new THREE.MeshLambertMaterial({ color: 0xf5cba7 });
 
   // 몸통
-  group.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.65, 0.25), mat), { position: new THREE.Vector3(0, 0.95, 0) }));
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.65, 0.25), mat);
+  body.position.set(0, 0.95, 0);
+  group.add(body);
   // 머리
-  group.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), skinMat), { position: new THREE.Vector3(0, 1.45, 0) }));
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), skinMat);
+  head.position.set(0, 1.45, 0);
+  group.add(head);
   // 왼팔
   const lArm = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.55, 0.15), mat);
   lArm.position.set(-0.35, 0.9, 0);
