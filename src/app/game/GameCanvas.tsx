@@ -164,12 +164,62 @@ export default function GameCanvas({ playerName }: Props) {
     camera.add(gunGroup);
     scene.add(camera);
 
+    // --- 시작 위치 (각 변 중앙, 안쪽으로 3칸) ---
+    const SPAWN_OFFSET = ROOM / 2 - 3;
+    const spawnPoints = [
+      new THREE.Vector3(0, 0, SPAWN_OFFSET),   // 플레이어: 남쪽
+      new THREE.Vector3(0, 0, -SPAWN_OFFSET),  // NPC0: 북쪽
+      new THREE.Vector3(SPAWN_OFFSET, 0, 0),   // NPC1: 동쪽
+      new THREE.Vector3(-SPAWN_OFFSET, 0, 0),  // NPC2: 서쪽
+    ];
+
+    // 플레이어 시작점 설정 (방향은 euler 선언 후 설정)
+    camera.position.set(spawnPoints[0].x, 1.7, spawnPoints[0].z);
+
+    // --- 은폐벽 (ㄷ자형, 각 시작점 뒤에 배치) ---
+    const shieldMat = new THREE.MeshLambertMaterial({ color: 0x8b7355 });
+    const shieldH = 2.2;
+    const shieldW = 4;
+    const shieldD = 0.4;
+    const shieldConfigs: [THREE.Vector3, number][] = [
+      [spawnPoints[0], 0],          // 남쪽: 정면벽 없이 양옆만
+      [spawnPoints[1], Math.PI],    // 북쪽
+      [spawnPoints[2], -Math.PI/2], // 동쪽
+      [spawnPoints[3], Math.PI/2],  // 서쪽
+    ];
+    shieldConfigs.forEach(([pos, ry]) => {
+      // 뒤 벽
+      const back = new THREE.Mesh(new THREE.BoxGeometry(shieldW, shieldH, shieldD), shieldMat);
+      back.position.set(pos.x, shieldH / 2, pos.z);
+      back.rotation.y = ry;
+      back.castShadow = true;
+      scene.add(back);
+      obstacles.push(back);
+
+      // 왼쪽 벽
+      const left = new THREE.Mesh(new THREE.BoxGeometry(shieldD, shieldH, 2.5), shieldMat);
+      const lOff = new THREE.Vector3(-shieldW / 2, 0, 1.2).applyEuler(new THREE.Euler(0, ry, 0));
+      left.position.set(pos.x + lOff.x, shieldH / 2, pos.z + lOff.z);
+      left.rotation.y = ry;
+      left.castShadow = true;
+      scene.add(left);
+      obstacles.push(left);
+
+      // 오른쪽 벽
+      const right = new THREE.Mesh(new THREE.BoxGeometry(shieldD, shieldH, 2.5), shieldMat);
+      const rOff = new THREE.Vector3(shieldW / 2, 0, 1.2).applyEuler(new THREE.Euler(0, ry, 0));
+      right.position.set(pos.x + rOff.x, shieldH / 2, pos.z + rOff.z);
+      right.rotation.y = ry;
+      right.castShadow = true;
+      scene.add(right);
+      obstacles.push(right);
+    });
+
     // --- NPCs ---
     const npcColors = [0x3498db, 0xe74c3c, 0x9b59b6];
     const npcs: NPC[] = npcColors.map((color, i) => {
       const group = makeHuman(color);
-      const p = randomPos(6);
-      group.position.set(p.x, 0, p.z);
+      group.position.set(spawnPoints[i + 1].x, 0, spawnPoints[i + 1].z);
       scene.add(group);
       return { group, hp: 100, shootTimer: i * 700 };
     });
@@ -191,6 +241,9 @@ export default function GameCanvas({ playerName }: Props) {
 
     // --- Controls ---
     const euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    // 플레이어 시작 방향: 북쪽(맵 안쪽)을 바라봄
+    euler.y = Math.PI;
+    camera.quaternion.setFromEuler(euler);
     let playerHp = 100;
     let playerKills = 0;
     let isLocked = false;
