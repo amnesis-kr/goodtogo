@@ -428,28 +428,37 @@ export default function MazeGame({ playerName }: Props) {
   }
 
   function toggleFullscreen() {
-    const el = document.documentElement;
-    const doc = document as unknown as { webkitFullscreenElement?: Element; webkitExitFullscreen?: () => void };
-    const elExt = el as unknown as { webkitRequestFullscreen?: () => void };
-    const isFS = !!(document.fullscreenElement || doc.webkitFullscreenElement);
-
-    if (!isFS) {
-      if (el.requestFullscreen) {
-        el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {
-          // iOS Safari: requestFullscreen throws — use fake fullscreen
-          setIosFakeFS(true); setIsFullscreen(true);
-        });
-      } else if (elExt.webkitRequestFullscreen) {
-        elExt.webkitRequestFullscreen();
-        setIsFullscreen(true);
-      } else {
-        // iOS Safari fallback: CSS fake fullscreen
-        setIosFakeFS(true); setIsFullscreen(true);
-      }
-    } else {
+    if (isFullscreen) {
+      document.body.style.overflow = '';
+      setIosFakeFS(false);
+      setIsFullscreen(false);
+      const doc = document as unknown as { webkitExitFullscreen?: () => void };
       if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
       else if (doc.webkitExitFullscreen) doc.webkitExitFullscreen();
-      setIosFakeFS(false); setIsFullscreen(false);
+      return;
+    }
+
+    const el = document.documentElement;
+    const elExt = el as unknown as { webkitRequestFullscreen?: () => void };
+
+    // iOS Safari는 fullscreen API 미지원 — CSS로 화면 가득 채우기
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    if (isIOS) {
+      document.body.style.overflow = 'hidden';
+      setIosFakeFS(true);
+      setIsFullscreen(true);
+    } else if (el.requestFullscreen) {
+      el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {
+        setIosFakeFS(true); setIsFullscreen(true);
+      });
+    } else if (elExt.webkitRequestFullscreen) {
+      elExt.webkitRequestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      setIosFakeFS(true);
+      setIsFullscreen(true);
     }
   }
 
