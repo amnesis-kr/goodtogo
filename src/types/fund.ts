@@ -9,6 +9,11 @@ export interface Fund {
   cons: string;
 }
 
+export interface ChartPoint {
+  date: string;
+  close: number;
+}
+
 export interface FundPrice {
   ticker: string;
   price: number;
@@ -16,4 +21,5 @@ export interface FundPrice {
   return1y: number;
   return3y: number;
   return5y: number;
+  chartData: ChartPoint[];
 }
