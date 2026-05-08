@@ -204,7 +204,7 @@ export default function GameCanvas({ playerName }: Props) {
     // 키보드
     const onKeyDown = (e: KeyboardEvent) => {
       keys[e.code] = true;
-      e.preventDefault();
+      if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
     };
     const onKeyUp = (e: KeyboardEvent) => { keys[e.code] = false; };
 
@@ -255,8 +255,8 @@ export default function GameCanvas({ playerName }: Props) {
       }
     };
 
-    document.addEventListener('keydown', onKeyDown, { capture: true });
-    document.addEventListener('keyup', onKeyUp);
+    window.addEventListener('keydown', onKeyDown, { capture: true });
+    window.addEventListener('keyup', onKeyUp, { capture: true });
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('pointerlockchange', onPointerLockChange);
     renderer.domElement.addEventListener('mousedown', onMouseDown);
@@ -413,8 +413,8 @@ export default function GameCanvas({ playerName }: Props) {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', onResize);
-      document.removeEventListener('keydown', onKeyDown, { capture: true });
-      document.removeEventListener('keyup', onKeyUp);
+      window.removeEventListener('keydown', onKeyDown, { capture: true });
+      window.removeEventListener('keyup', onKeyUp, { capture: true });
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('pointerlockchange', onPointerLockChange);
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
