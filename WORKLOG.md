@@ -33,3 +33,4 @@
 | | 기존 내 명령들 기억해? | 메모리(`project_setup.md`) 확인 후 이전 세션 내용 요약 제공 |
 | | 내가 지시하는 내용과 네가 실행하는 모든 내용을 시간과 같이 기록해. 다시 시작할 때 이 명령이 실행되도록 해줘 | CLAUDE.md에 작업 로그 자동 기록 규칙 추가, WORKLOG.md에 2차 세션 섹션 추가 |
 | | 파일 생성/수정 시 Git 자동 업로드, 민감 파일은 자동 .gitignore 추가 — 다시 시작해도 실행되도록 설정 | CLAUDE.md에 Git 자동 업로드 규칙 추가, .gitignore에 IDE/.bkit/.omc/.claude/.cache/로그 항목 추가, AGENTS.md·README.md·CLAUDE.md·WORKLOG.md·.gitignore 커밋 후 push (cbf1575) |
+| | Vercel 주소가 https://goodtogo-nine.vercel.app/ 로 바뀌었다고 알림, 설정에 기록 요청 | 메모리(project_setup.md) 및 WORKLOG.md Vercel URL 업데이트 |
