@@ -205,13 +205,13 @@ export default function FundsPage() {
                     {/* 장점 */}
                     <div className="bg-emerald-50 rounded-xl p-4">
                       <div className="text-sm font-semibold text-emerald-700 mb-2">장점</div>
-                      <p className="text-sm text-emerald-800 whitespace-pre-line leading-relaxed">{fund.pros}</p>
+                      <p className="text-sm text-emerald-800 leading-relaxed">{fund.pros.split('\\n').map((line, i) => <span key={i}>{line}<br /></span>)}</p>
                     </div>
 
                     {/* 단점 */}
                     <div className="bg-red-50 rounded-xl p-4">
                       <div className="text-sm font-semibold text-red-600 mb-2">단점</div>
-                      <p className="text-sm text-red-800 whitespace-pre-line leading-relaxed">{fund.cons}</p>
+                      <p className="text-sm text-red-800 leading-relaxed">{fund.cons.split('\\n').map((line, i) => <span key={i}>{line}<br /></span>)}</p>
                     </div>
                   </div>
                 )}
