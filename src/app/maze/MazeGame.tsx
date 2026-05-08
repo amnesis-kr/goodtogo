@@ -548,6 +548,7 @@ export default function MazeGame({ playerName }: Props) {
 
     const lookTouch: { id: number|null; lx: number; ly: number } = { id: null, lx: 0, ly: 0 };
     const onTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
       for (const t of Array.from(e.changedTouches)) {
         const el = document.elementFromPoint(t.clientX, t.clientY);
         if (document.getElementById('joy-area')?.contains(el)) continue;
@@ -555,6 +556,7 @@ export default function MazeGame({ playerName }: Props) {
       }
     };
     const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
       for (const t of Array.from(e.changedTouches)) {
         if (t.identifier === lookTouch.id) {
           mobileLookRef.current.dx = t.clientX - lookTouch.lx;
@@ -564,6 +566,7 @@ export default function MazeGame({ playerName }: Props) {
       }
     };
     const onTouchEnd = (e: TouchEvent) => {
+      e.preventDefault();
       for (const t of Array.from(e.changedTouches)) { if (t.identifier === lookTouch.id) lookTouch.id = null; }
     };
 
@@ -572,9 +575,9 @@ export default function MazeGame({ playerName }: Props) {
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('pointerlockchange', onPLC);
     renderer.domElement.addEventListener('mousedown', onMouseDown);
-    renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: true });
-    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: true });
-    renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: true });
+    renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
+    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: false });
+    renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: false });
 
     const clock = new THREE.Clock();
     let animId: number;
@@ -638,16 +641,21 @@ export default function MazeGame({ playerName }: Props) {
     animate();
 
     const onResize = () => {
-      camera.aspect = mount.clientWidth/mount.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(mount.clientWidth, mount.clientHeight);
+      // 가로모드 전환 시 브라우저가 실제 크기를 반영하기까지 짧은 지연이 필요
+      setTimeout(() => {
+        camera.aspect = mount.clientWidth / mount.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(mount.clientWidth, mount.clientHeight);
+      }, 100);
     };
     window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
 
     return () => {
       cancelAnimationFrame(animId);
       clearInterval(timerInterval);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onResize);
       window.removeEventListener('keydown', onKeyDown, { capture: true });
       window.removeEventListener('keyup', onKeyUp, { capture: true });
       document.removeEventListener('mousemove', onMouseMove);
