@@ -16,7 +16,8 @@
 | 11:52 | 네가 진행하는 내용은 시간과 진행내용 그리고 내가 한 지시 모두 기록하는 파일을 생성하고 자동으로 기록해줘 | `WORKLOG.md` 생성, 이후 모든 작업 자동 기록 |
 
 | 11:55 | Vercel에 배포해줘 | Vercel 대시보드에서 GitHub 저장소 연결 후 배포 완료 |
-| 11:57 | (배포 URL 공유) | 배포 URL 확인: https://goodtogo-xtlo.vercel.app/ |
+| 11:57 | (배포 URL 공유) | 배포 URL 확인: https://goodtogo-xtlo.vercel.app/ (이후 변경) |
+| 12:10 | 베셀 주소는 https://goodtogo-zeta.vercel.app/ 로할께 | Vercel 배포 URL 변경 확인 및 기록 |
 
 ---
 
