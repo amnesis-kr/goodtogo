@@ -65,6 +65,17 @@ export default function GameCanvas({ playerName }: Props) {
   const [kills, setKills] = useState(0);
   const [locked, setLocked] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  }
   const stateRef = useRef({ hp: 100, kills: 0, status: 'playing' as 'playing' | 'dead' | 'win' });
 
   // 조이스틱/모바일 시점 입력을 게임 루프와 공유
@@ -73,7 +84,8 @@ export default function GameCanvas({ playerName }: Props) {
   const shootRef = useRef(false);
 
   const onJoystickMove = useCallback((x: number, y: number) => {
-    joystickRef.current = { x, y };
+    joystickRef.current.x = x;
+    joystickRef.current.y = y;
   }, []);
 
   useEffect(() => {
@@ -451,10 +463,18 @@ export default function GameCanvas({ playerName }: Props) {
             <div className="text-xs text-gray-200 mt-1">{hp} / 100</div>
           </div>
 
-          {/* 킬 */}
-          <div className="absolute top-4 right-6 text-white text-right drop-shadow">
-            <div className="text-xs text-gray-200">킬</div>
-            <div className="text-3xl font-black">{kills}</div>
+          {/* 킬 + 전체화면 */}
+          <div className="absolute top-4 right-6 text-white text-right drop-shadow flex flex-col items-end gap-2">
+            <button
+              onClick={toggleFullscreen}
+              className="bg-black/40 hover:bg-black/60 text-white text-xs px-3 py-1 rounded-lg border border-white/20 transition"
+            >
+              {isFullscreen ? '전체화면 해제' : '전체화면'}
+            </button>
+            <div>
+              <div className="text-xs text-gray-200">킬</div>
+              <div className="text-3xl font-black">{kills}</div>
+            </div>
           </div>
 
           {/* 조작 안내 (데스크탑) */}
